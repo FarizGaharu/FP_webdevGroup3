@@ -13,6 +13,14 @@ class ProfilerController extends Controller
     public function index2(){
         return view("coba");
     }
+
+    public function login(){
+        return view("login");
+    }
+
+    public function register(){
+        return view("register");
+    }
 }
 
 

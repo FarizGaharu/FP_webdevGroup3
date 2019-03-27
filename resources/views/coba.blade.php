@@ -434,11 +434,11 @@ website!
                         <!-- Authentication Links -->
                         @guest
                             <li>
-                                <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a href="abangcost.me/login">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li>
-                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a href="abangcost.me/register">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
