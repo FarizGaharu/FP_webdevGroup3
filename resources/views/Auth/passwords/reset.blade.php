@@ -1,70 +1,39 @@
-@extends('layouts.app')
+@extends('front.layout')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
-                        {!! csrf_field() !!}
-
+@section('main')
+   <section id="content-wrap">
+        <div class="row">
+            <div class="col-twelve">
+                <div class="primary-content">
+                    @if (session('status'))
+                        @component('front.components.alert')
+                            @slot('type')
+                                success
+                            @endslot
+                            <p>{{ session('status') }}</p>
+                        @endcomponent
+                    @endif
+                    <h3>@lang('Reset Password')</h3>
+                    <form role="form" method="POST" action="{{ route('password.request') }}">
+                        {{ csrf_field() }}
                         <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ $email or old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation">
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-refresh"></i>Reset Password
-                                </button>
-                            </div>
-                        </div>
+                        @if ($errors->has('email'))
+                            @component('front.components.error')
+                                {{ $errors->first('email') }}
+                            @endcomponent
+                        @endif                          
+                        <input id="email" placeholder="@lang('Email')" type="email" class="full-width"  name="email" value="{{ old('email') }}" required>
+                        @if ($errors->has('password'))
+                            @component('front.components.error')
+                                {{ $errors->first('password') }}
+                            @endcomponent
+                        @endif 
+                        <input id="password" placeholder="@lang('Password')" type="password" class="full-width"  name="password" required>
+                        <input id="password-confirm" placeholder="@lang('Confirm your password')" type="password" class="full-width" name="password_confirmation" required>
+                        <input class="button-primary full-width-on-mobile" type="submit" value="@lang('Reset Password')">
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @endsection

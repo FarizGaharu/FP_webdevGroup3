@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Models\User;
+use App\Models\Post;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,9 +26,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('user', function ($value) {
+            return User::with('ingoing')->findOrFail($value);
+        });
+
+        Route::bind('post', function ($value) {
+            return Post::with('ingoing', 'user', 'categories', 'tags')->findOrFail($value);
+        });
     }
 
     /**
@@ -38,8 +47,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
-
-        //
     }
 
     /**

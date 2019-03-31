@@ -1,47 +1,35 @@
-@extends('layouts.app')
+@extends('front.layout')
 
-<!-- Main Content -->
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-                <div class="panel-body">
+@section('main')
+   <section id="content-wrap">
+        <div class="row">
+            <div class="col-twelve">
+                <div class="primary-content">
                     @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
+                        @component('front.components.alert')
+                            @slot('type')
+                                success
+                            @endslot
+                            <p>{{ session('status') }}</p>
+                        @endcomponent
                     @endif
-
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
-                        {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
+                    <div class="alert-box ss-notice hideit">
+                        <p>@lang('You have forgotten your password, dont mind ! You can create a new one. But for your own security we want to be sure of your identity. So send us your email by filling this form. You will get a message with instruction to create your new password.')</p>
+                        <i class="fa fa-times close"></i>
+                    </div>
+                    <h3>@lang('Reset Password')</h3>
+                    <form role="form" method="POST" action="{{ route('password.email') }}">
+                        {{ csrf_field() }}
+                        @if ($errors->has('email'))
+                            @component('front.components.error')
+                                {{ $errors->first('email') }}
+                            @endcomponent
+                        @endif   
+                        <input id="email" type="email" placeholder="@lang('Email')" class="full-width" name="email" value="{{ old('email') }}" required>
+                        <input class="button-primary full-width-on-mobile" type="submit" value="@lang('Send Password Reset Link')">
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @endsection

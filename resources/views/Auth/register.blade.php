@@ -1,82 +1,44 @@
-@extends('layouts.app')
+@extends('front.layout')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
-                        {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Name</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation">
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i>Register
-                                </button>
-                            </div>
-                        </div>
+@section('main')
+   <section id="content-wrap">
+        <div class="row">
+            <div class="col-twelve">
+                <div class="primary-content">
+                    @if (session('confirmation-success'))
+                        @component('front.components.alert')
+                            @slot('type')
+                                success
+                            @endslot
+                            {!! session('confirmation-success') !!}
+                        @endcomponent
+                    @endif
+                    <h3>@lang('Register')</h3>
+                    <form role="form" method="POST" action="{{ route('register') }}">
+                        {{ csrf_field() }}
+                        @if ($errors->has('name'))
+                            @component('front.components.error')
+                                {{ $errors->first('name') }}
+                            @endcomponent
+                        @endif 
+                        <input id="name" placeholder="@lang('Name')" type="text" class="full-width"  name="name" value="{{ old('name') }}" required autofocus>
+                        @if ($errors->has('email'))
+                            @component('front.components.error')
+                                {{ $errors->first('email') }}
+                            @endcomponent
+                        @endif                       
+                        <input id="email" placeholder="@lang('Email')" type="email" class="full-width"  name="email" value="{{ old('email') }}" required>
+                        @if ($errors->has('password'))
+                            @component('front.components.error')
+                                {{ $errors->first('password') }}
+                            @endcomponent
+                        @endif 
+                        <input id="password" placeholder="@lang('Password')" type="password" class="full-width"  name="password" required>
+                        <input id="password-confirm" placeholder="@lang('Confirm your password')" type="password" class="full-width" name="password_confirmation" required>
+                        <input class="button-primary full-width-on-mobile" type="submit" value="@lang('Register')">
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @endsection
